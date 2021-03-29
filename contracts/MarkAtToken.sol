@@ -1,14 +1,22 @@
-// SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity ^0.8.0;
 
-contract MarkAtToken {
-    string name = "Celo";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-    function getName() public view returns (string memory) {
-        return name;
-    }
+contract MyCollectible is ERC721 {
+    constructor(string _name, string _symbol)
+        public
+        ERC721Token(_name, _symbol)
+    {}
 
-    function setName(string calldata newName) external {
-        name = newName;
+    /**
+     * Custom accessor to create a unique token
+     */
+    function mintUniqueTokenTo(
+        address _to,
+        uint256 _tokenId,
+        string _tokenURI
+    ) public {
+        super._mint(_to, _tokenId);
+        super._setTokenURI(_tokenId, _tokenURI);
     }
 }
