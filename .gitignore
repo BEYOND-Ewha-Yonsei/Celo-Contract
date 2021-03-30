@@ -2,3 +2,4 @@ node_modules/
 .secret
 build/
 .DS_Store
+package-lock.json
