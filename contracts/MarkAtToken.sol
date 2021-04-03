@@ -1,12 +1,24 @@
 // SPDX-License-Identifier: MIT
+pragma solidity 0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract MarkAtToken is ERC721 {
-    constructor() ERC721("MarkAtToken", "MAT") {}
+    uint256 public tokenCounter;
 
-    function mint(address _to, uint256 _tokenId) public {
-        _mint(_to, _tokenId);
+    constructor() public ERC721("MarkAtToken", "MarkAtToken") {
+        tokenCounter = 0;
+    }
+
+    function createCollectible(string memory tokenURI)
+        public
+        returns (uint256)
+    {
+        uint256 newItemId = tokenCounter;
+        _safeMint(msg.sender, newItemId);
+        // _setTokenURI(newItemId, tokenURI);
+        tokenCounter = tokenCounter + 1;
+        return newItemId;
     }
 }
