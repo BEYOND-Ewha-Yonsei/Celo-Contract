@@ -3,22 +3,24 @@ pragma solidity 0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract MarkAtToken is ERC721 {
-    uint256 public tokenCounter;
+contract MarkAtToken is ERC721URIStorage {
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
-    constructor() public ERC721("MarkAtToken", "MarkAtToken") {
-        tokenCounter = 0;
-    }
+    constructor() public ERC721("MarkAtToken", "MarkAtToken") {}
 
-    function createCollectible(string memory tokenURI)
+    function awardItem(address consumer, string memory tokenURI)
         public
         returns (uint256)
     {
-        uint256 newItemId = tokenCounter;
-        _safeMint(msg.sender, newItemId);
-        // _setTokenURI(newItemId, tokenURI);
-        tokenCounter = tokenCounter + 1;
-        return newItemId;
+        _tokenIds.increment();
+
+        uint256 newTokenId = _tokenIds.current();
+        _mint(consumer, newTokenId);
+        _setTokenURI(newTokenId, tokenURI);
+
+        return newTokenId;
     }
 }
