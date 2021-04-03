@@ -1,26 +1,28 @@
-const Web3 = require('web3')
-const ContractKit = require('@celo/contractkit')
-const web3 = new Web3('https://alfajores-forno.celo-testnet.org')
-const kit = ContractKit.newKitFromWeb3(web3)
-const getAccount = require('./getAccount').getAccount
-// const HelloWorld = require('./build/contracts/HelloWorld.json')
+/** @format */
 
-async function awaitWrapper(){
-    let account = await getAccount()
-    
-    // This account must have a CELO balance to pay tx fees 
-    // get some testnet funds at https://celo.org/build/faucet
-    console.log(account.address)
-    
-//     kit.connection.addAccount(account.privateKey) // this account must have a CELO balance to pay transaction fees
+const Web3 = require("web3");
+const ContractKit = require("@celo/contractkit");
+const web3 = new Web3("https://alfajores-forno.celo-testnet.org");
+const kit = ContractKit.newKitFromWeb3(web3);
+const getAccount = require("./getAccount").getAccount;
+const MarkAtToken = require("./build/contracts/MarkAtToken.json");
 
-//     let tx = await kit.connection.sendTransaction({
-//         from: account.address,
-//         data: HelloWorld.bytecode
-//     })
+async function awaitWrapper() {
+	let account = await getAccount();
 
-//     const receipt = await tx.waitReceipt()
-//     console.log(receipt)
+	// This account must have a CELO balance to pay tx fees
+	// get some testnet funds at https://celo.org/build/faucet
+	console.log(account.address);
+
+	kit.connection.addAccount(account.privateKey); // this account must have a CELO balance to pay transaction fees
+
+	let tx = await kit.connection.sendTransaction({
+		from: account.address,
+		data: MarkAtToken.bytecode,
+	});
+
+	const receipt = await tx.waitReceipt();
+	console.log(receipt);
 }
 
-awaitWrapper()
+awaitWrapper();
