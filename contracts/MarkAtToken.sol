@@ -3,10 +3,11 @@ pragma solidity 0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-contract MarkAtToken is ERC721Enumerable {
+contract MarkAtToken is ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
@@ -20,7 +21,7 @@ contract MarkAtToken is ERC721Enumerable {
 
         uint256 newTokenId = _tokenIds.current();
         _mint(consumer, newTokenId);
-        // _setTokenURI(newTokenId, tokenURI);
+        _setTokenURI(newTokenId, tokenURI);
 
         return newTokenId;
     }
