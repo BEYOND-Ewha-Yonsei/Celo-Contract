@@ -6,10 +6,25 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MyToken is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
-    constructor() ERC721("MarkAtToken", "MarkAtToken") {}
+contract MarkAtToken is ERC721, ERC721Enumerable, ERC721URIStorage {
+    struct MarkAtToken {
+        string footprint;
+    }
 
-    function safeMint(address to, uint256 tokenId) public onlyOwner {
+    MarkAtToken[] public tokens;
+    address public owner;
+
+    constructor() ERC721("MarkAtToken", "MarkAtToken") {
+        owner = msg.sender;
+    }
+
+    function testMint(string memory name, address account) public {
+        uint256 tokenId = tokens.length; // 유일한 토큰 ID
+        tokens.push(MarkAtToken(name));
+        _mint(account, tokenId); // 새 마켓토큰을 발행
+    }
+
+    function safeMint(address to, uint256 tokenId) public {
         _safeMint(to, tokenId);
     }
 
