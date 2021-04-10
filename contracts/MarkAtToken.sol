@@ -5,11 +5,34 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract MyToken is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
-    constructor() ERC721("MarkAtToken", "MarkAtToken") {}
+contract MarkAtToken is ERC721, ERC721Enumerable, ERC721URIStorage {
+    struct MarkAtToken {
+        string footprint;
+    }
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+    MarkAtToken[] public tokens;
+    address public owner;
 
-    function safeMint(address to, uint256 tokenId) public onlyOwner {
+    constructor() ERC721("MarkAtToken", "MarkAtToken") {
+        owner = msg.sender;
+    }
+
+    function testMint(
+        string memory name,
+        address account,
+        string memory metadata
+    ) public {
+        _tokenIds.increment();
+        uint256 newTokenId = _tokenIds.current();
+        tokens.push(MarkAtToken(name));
+        _mint(account, newTokenId);
+        _setTokenURI(newTokenId, metadata);
+    }
+
+    function safeMint(address to, uint256 tokenId) public {
         _safeMint(to, tokenId);
     }
 
