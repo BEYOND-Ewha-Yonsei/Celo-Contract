@@ -20,7 +20,7 @@ contract MarkAtToken is ERC721, ERC721Enumerable, ERC721URIStorage {
         owner = msg.sender;
     }
 
-    function testMint(
+    function mintMarkAtToken(
         string memory name,
         address account,
         string memory metadata
